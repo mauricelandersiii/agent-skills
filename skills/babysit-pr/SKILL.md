@@ -53,7 +53,7 @@ Each iteration:
 ## Bug-review agent triage (required)
 
 Before changing code for any finding from Cursor Bugbot or Macroscope, **read
-and follow** `.agents/skills/triage-bugbot-findings/SKILL.md` in full. The
+and follow** the `triage-bugbot-findings` skill in full. The
 same two-gate process applies to both agents.
 
 Summary (full gates and table format live in that skill):
