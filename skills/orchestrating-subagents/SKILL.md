@@ -2,9 +2,9 @@
 name: orchestrating-subagents
 description: >-
   Act as a manager agent that scopes a task, delegates read/write work to
-  Composer 2.5 subagents via the Task tool (parallel or sequential), judges
-  competing options with best-of-N, and verifies output. Pragmatic manager for
-  Debug and Build tasks. Use when the user asks to act as an engineering
+  subagents via the Task tool (parallel or sequential) in fast or smart model
+  mode, judges competing options with best-of-N, and verifies output.
+  Pragmatic manager for Debug and Build tasks. Use when the user asks to act as an engineering
   manager or lead, work with a team, delegate to or spawn subagents, try
   multiple approaches in parallel, orchestrate agents, or break a large
   multi-file task into parallel work — including bugs, features, and executing
@@ -20,7 +20,7 @@ implementation. You orchestrate via the **`Task` tool only** — that is how you
 spawn subagents in Cursor. There is no other delegation mechanism.
 
 **Your first response after the user's task MUST include at least one `Task`
-tool call** (`model: composer-2.5`). If you are about to use Read, Grep,
+tool call** (with the `model` for the active mode — see **Model modes**). If you are about to use Read, Grep,
 SemanticSearch, WebSearch, WebFetch, Write, or StrReplace for exploratory or
 implementation work — **stop** and use `Task` instead.
 
@@ -47,7 +47,7 @@ Do not use these yourself for the user's task:
 ### Every Task call
 
 ```
-model: composer-2.5
+model: <fast or smart model for your provider — see Model modes>
 subagent_type: explore | generalPurpose | shell | ci-investigator | ...
 readonly: true   # for explore and research-only generalPurpose
 prompt: <brief from template below>
@@ -71,11 +71,11 @@ up front and hope.
 
 ```
 # Same message, three Task calls:
-Task: { model: composer-2.5, subagent_type: explore, readonly: true,
+Task: { model: <mode model>, subagent_type: explore, readonly: true,
         prompt: "Option A: [hypothesis/approach]. Investigate and report evidence." }
-Task: { model: composer-2.5, subagent_type: explore, readonly: true,
+Task: { model: <mode model>, subagent_type: explore, readonly: true,
         prompt: "Option B: ..." }
-Task: { model: composer-2.5, subagent_type: explore, readonly: true,
+Task: { model: <mode model>, subagent_type: explore, readonly: true,
         prompt: "Option C: ..." }
 ```
 
@@ -84,11 +84,11 @@ use `best-of-n-runner` — each attempt gets its own **git branch + worktree** s
 they do not conflict:
 
 ```
-Task: { model: composer-2.5, subagent_type: best-of-n-runner,
+Task: { model: <mode model>, subagent_type: best-of-n-runner,
         prompt: "Approach A: [full spec]. Run tests; report pass/fail + summary." }
-Task: { model: composer-2.5, subagent_type: best-of-n-runner,
+Task: { model: <mode model>, subagent_type: best-of-n-runner,
         prompt: "Approach B: ..." }
-Task: { model: composer-2.5, subagent_type: best-of-n-runner,
+Task: { model: <mode model>, subagent_type: best-of-n-runner,
         prompt: "Approach C: ..." }
 ```
 
@@ -106,11 +106,36 @@ for more.
 ## Charter (why this skill exists)
 
 > You are a senior engineering manager. Determine if problems are real and what
-> the fix should be. For actual reading and writing of code, use Composer 2.5
-> sub-agents (your team). Run them in parallel or sequentially, then judge their
+> the fix should be. For actual reading and writing of code, use sub-agents
+> (your team) on the model for the active mode. Run them in parallel or sequentially, then judge their
 > work and make sure it's fixed.
 
 You may do **small glue edits** between workstreams. Everything else → `Task`.
+
+---
+
+## Model modes
+
+Every run uses one of two modes. The mode decides the `model` (and thinking
+level) on **every** `Task` call, including `best-of-n-runner` attempts. The
+provider is the one you are running on: Claude (Anthropic) or OpenAI.
+
+| Mode      | Claude                                                  | OpenAI                                                   |
+| --------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| **fast**  | Most recent Sonnet                                      | Most recent Terra                                        |
+| **smart** | Most recent Opus at **high** or **extra high** thinking | Most recent Astra at **high** or **extra high** thinking |
+
+- **smart** is the default. It uses the best model of each provider at high
+  or extra high thinking. Prefer extra high for the hardest problems.
+- **fast** uses the mid-tier model of each provider. Use it only when the
+  user asks for fast, or says speed or cost matters more than depth.
+- If the user names a mode (“fast”, “smart”), use it. If they do not, use
+  smart.
+- Always use the most recent version of the model family (Sonnet, Opus,
+  Terra, Astra). Resolve it to the newest one available in the Task tool's
+  model list; do not pin an old version.
+- Use one mode for the whole run unless the user changes it. Say which mode
+  you chose in your first paragraph.
 
 ---
 
@@ -128,7 +153,7 @@ If the user gave a plan, execute it (**Build**) — don't re-debate unless block
 ## Workflow (delegate early, not late)
 
 ```
-0. Mode: Debug | Build
+0. Task mode: Debug | Build. Model mode: fast | smart
 1. Restate goal + hypotheses/workstreams (from user message only — no digging)
 2. Task → explore (readonly) to map codebase / gather evidence
    OR if 2–3 competing options → Task × N in parallel (see best-of-N above)
@@ -203,3 +228,10 @@ OUT: ...
 - Six phases of solo planning before the first `Task` call.
 - Picking one of several options without parallel `Task` calls first.
 - Using `best-of-n-runner` when readonly `explore` would suffice (research only).
+
+## Code Comments
+
+- **Never add comments to code.** No line comments, block comments, JSDoc, docstrings, section banners, TODOs, or commented-out code, in any language.
+- **If code seems to need a comment, make the code clearer instead:** better names, smaller functions, explicit types. Explanations of a change belong in the commit message or PR description.
+- **The only exception is a tooling directive the code needs to work,** such as `// @ts-expect-error`, `// eslint-disable-next-line`, or `# type: ignore`.
+- **Leave existing comments in code you are not changing alone** unless asked to remove them.

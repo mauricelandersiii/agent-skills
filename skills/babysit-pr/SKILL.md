@@ -2,10 +2,10 @@
 name: babysit-pr
 description: >-
   Babysit a pull request until merge-ready: resolve merge conflicts, fix scoped
-  CI failures, address human review comments, and triage Bugbot findings using
-  the two-gate workflow (real + impactful only). Use when the user says /babysit,
-  babysit PR, monitor PR, get PR merge-ready, or links a GitHub PR to watch
-  until green and comments are handled.
+  CI failures, address human review comments, and triage Bugbot and Macroscope
+  findings using the two-gate workflow (real + impactful only). Use when the
+  user says /babysit, babysit PR, monitor PR, get PR merge-ready, or links a
+  GitHub PR to watch until green and comments are handled.
 ---
 
 # Babysit PR
@@ -24,9 +24,10 @@ or `PR #1400`). If missing, ask once.
 2. **CI green** — all required checks passing on the latest commit.
 3. **Human review** — no unresolved change requests or bug reports from
    reviewers that are valid and in scope.
-4. **Bugbot triaged** — every active Bugbot finding has been through the
-   two-gate workflow below; fixes pushed for Action = **Fix**; Action =
-   **Ignore** documented in the triage table (no code change required).
+4. **Bugbot / Macroscope triaged** — every active finding from Cursor Bugbot
+   or Macroscope has been through the two-gate workflow below; fixes pushed for
+   Action = **Fix**; Action = **Ignore** documented in the triage table (no
+   code change required).
 
 Stop early only when **all four** are satisfied. If blocked (conflicting
 intents, failing CI outside PR scope, needs human decision), report clearly and
@@ -45,33 +46,35 @@ Each iteration:
 4. **Comments** — handle active unresolved threads:
    - **Human reviewers** — address valid in-scope requests; reply or resolve
      when done.
-   - **Cursor Bugbot** — follow **Bugbot triage** (required; do not fix every
-     Bugbot report by default).
+   - **Cursor Bugbot / Macroscope** — follow **bug-review agent triage**
+     (required; do not fix every finding by default).
 5. Commit, push, update PR if needed, re-check from step 1.
 
-## Bugbot triage (required)
+## Bug-review agent triage (required)
 
-Before changing code for any Bugbot finding, **read and follow**
-`.cursor/skills/triage-bugbot-findings/SKILL.md` in full.
+Before changing code for any finding from Cursor Bugbot or Macroscope, **read
+and follow** `.agents/skills/triage-bugbot-findings/SKILL.md` in full. The
+same two-gate process applies to both agents.
 
 Summary (full gates and table format live in that skill):
 
-- **Gate 1 — Real?** Verify in code; Bugbot is not ground truth.
+- **Gate 1 — Real?** Verify in code; neither Bugbot nor Macroscope is ground truth.
 - **Gate 2 — Impactful?** Only fix production-meaningful issues.
 - Default to **ignore** unless both gates pass.
 - Output the **triage table** before implementing fixes.
 - Implement **only** findings marked **Fix**; document **Ignore** with rationale.
 
-Do not expand scope beyond triaged Bugbot findings. Do not add tests unless
+Do not expand scope beyond triaged findings. Do not add tests unless
 the user explicitly asks.
 
 ## Out of scope
 
 - Merging the PR (unless the user explicitly asks, with repo safety gates).
 - Fixing CI or code unrelated to this PR to make checks pass.
-- Applying every Bugbot suggestion without triage.
+- Applying every Bugbot or Macroscope suggestion without triage.
 
 ## Team prompt
 
 **`/babysit https://github.com/Org/repo/pull/1234`** — no extra instructions
-needed; Bugbot handling uses the triage skill automatically.
+needed; Bugbot and Macroscope findings are both handled by the triage skill
+automatically.

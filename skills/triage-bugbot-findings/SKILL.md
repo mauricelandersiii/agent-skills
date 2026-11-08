@@ -1,27 +1,28 @@
 ---
 name: triage-bugbot-findings
 description: >-
-  Triage Cursor Bugbot PR review findings before fixing anything. Use when the
-  user asks to fix Bugbot, review Bugbot reports, triage Bugbot comments,
-  address PR review findings from Cursor Bugbot, or run "fix bugbot" on a PR.
-  Also use when Cursor Bugbot triggers Fix in Cursor, Fix in Web, Fix All,
-  Bugbot Autofix, or asks to fix a bugbot finding (or bugbot findings) on a PR.
-  Only fix findings that are both real and impactful; ignore the rest with a
-  short rationale. Do not fix drive-by issues or expand scope beyond triaged
-  findings.
+  Triage Cursor Bugbot or Macroscope PR review findings before fixing anything.
+  Use when the user asks to fix Bugbot, fix Macroscope, review Bugbot reports,
+  review Macroscope reports, triage Bugbot comments, triage Macroscope comments,
+  address PR review findings from Cursor Bugbot or Macroscope, or run "fix
+  bugbot" / "fix macroscope" on a PR. Also use when Cursor Bugbot or Macroscope
+  triggers Fix in Cursor, Fix in Web, Fix All, Autofix, or asks to fix a
+  finding (or findings) on a PR from either agent. Only fix findings that are
+  both real and impactful; ignore the rest with a short rationale. Do not fix
+  drive-by issues or expand scope beyond triaged findings.
 ---
 
-# Triage Cursor Bugbot Findings
+# Triage Cursor Bugbot / Macroscope Findings
 
-Specialized workflow for **Cursor Bugbot** PR review comments. Do not treat Bugbot output as ground truth — verify each finding in the codebase before changing anything.
+Specialized workflow for **Cursor Bugbot** (`bugbot[bot]`) and **Macroscope** (`macroscope[bot]`) PR review comments. Do not treat either agent's output as ground truth — verify each finding in the codebase before changing anything.
 
 ## Operating posture
 
-Default to **ignore** unless a finding survives both gates below. Bugbot often flags theoretical issues, stale assumptions, or deliberate product choices. Fixing noise wastes review time and adds regression risk.
+Default to **ignore** unless a finding survives both gates below. Bugbot and Macroscope often flag theoretical issues, stale assumptions, or deliberate product choices. Fixing noise wastes review time and adds regression risk.
 
 **Do not:**
 
-- Fix every Bugbot report because the user said "fix bugbot"
+- Fix every Bugbot or Macroscope report because the user said "fix bugbot" / "fix macroscope"
 - Refactor unrelated code while addressing a finding
 - Add tests unless the user explicitly asks
 - Expand scope beyond findings that pass both gates
@@ -74,7 +75,7 @@ When unsure, bias toward **ignore** and explain what would need to be true for i
 4. **Implement only** findings marked Fix.
 5. **Summarize** what was fixed vs ignored and why.
 
-If the user only pasted findings without a PR link, ask for the PR or branch if needed to verify context.
+If the user only pasted findings without a PR link, ask for the PR or branch if needed to verify context. Apply the same triage process regardless of whether findings come from Bugbot or Macroscope.
 
 ## Required output format
 
@@ -104,4 +105,4 @@ One line per ignored finding so reviewers know it was considered, not missed.
 
 ## Team prompt (optional)
 
-Users can say: **"Triage and fix Bugbot on PR #1234"** — no long preface needed; this skill supplies the criteria.
+Users can say: **"Triage and fix Bugbot on PR #1234"** or **"Triage and fix Macroscope on PR #1234"** — no long preface needed; this skill supplies the criteria.

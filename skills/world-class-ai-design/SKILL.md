@@ -157,7 +157,7 @@ SHIP
 
 ## Repo notes
 
-- Screenshots / demos: `video-testing.md`, AGENTS.md
+- Screenshots / demos: `playbooks/guides/video-testing.md`, AGENTS.md
 - Agent API keys: gitignored `.env.agents`; never ship in product
 - Techniques 7–8 body text in the newsletter is paywalled; Deliver content above follows article framing plus Lenny's published technique list
 

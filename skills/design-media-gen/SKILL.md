@@ -120,7 +120,7 @@ Good scroll-scrubbed transitions make users want to keep exploring — often ach
 
 ## Repo integration
 
-- Demo motion: Playwright screencast per `video-testing.md`
+- Demo motion: Playwright screencast per `playbooks/guides/video-testing.md`
 - After media pass: `design-critic` again if composition changed significantly
 - Animation timing/easing on UI chrome: `emil-design-eng`, `apple-design`
 

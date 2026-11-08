@@ -11,7 +11,7 @@ description: >-
 
 Deliver **one self-contained HTML file** plus a **public trycloudflare link** so the user can read outcomes in the browser: score at a glance, filter/search, expandable detail, and domain-specific blocks (rubrics, SMS, tasks, traces, tables) inferred from the source material.
 
-**Design bar:** Read `.cursor/skills/emil-design-eng/SKILL.md` for motion, easing, and interaction polish (`cubic-bezier` eases, `:active` scale on buttons, staggered card entrance, `prefers-reduced-motion`). Keep the layout clean and information-dense — this is an internal reading surface, not marketing.
+**Design bar:** Read the `emil-design-eng` skill for motion, easing, and interaction polish (`cubic-bezier` eases, `:active` scale on buttons, staggered card entrance, `prefers-reduced-motion`). Keep the layout clean and information-dense — this is an internal reading surface, not marketing.
 
 **Not in git:** Generated HTML/JSON/logs live under `/opt/cursor/artifacts/` unless the user explicitly wants a committed generator in the repo.
 

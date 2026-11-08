@@ -99,7 +99,7 @@ After the loop, the design should have **its own identity** while keeping the or
 
 ## Repo integration
 
-- Screenshots: Playwright per `video-testing.md` / AGENTS.md
+- Screenshots: Playwright per `playbooks/guides/video-testing.md` / AGENTS.md
 - After critic loop passes: run Deliver techniques in `world-class-ai-design` (subtract, tells pass, hand-written copy)
 - Motion craft: `emil-design-eng`, `apple-design` after composition is settled
 
